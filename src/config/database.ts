@@ -6,6 +6,7 @@ export async function connectToDatabase(): Promise<void> {
     throw new Error('Missing MONGO_URI in environment');
   }
 
+  //
   await mongoose.connect(databaseUri);
 }
 

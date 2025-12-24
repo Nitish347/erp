@@ -6,14 +6,17 @@ import {
   listStudentsHandler,
   updateStudentHandler,
 } from '../../controllers/student.controller';
+import { authenticateToken, requireRole } from '../../middlewares/auth';
 
 const router = Router();
 
-router.post('/', createStudentHandler);
-router.get('/', listStudentsHandler);
-router.get('/:id', getStudentByIdHandler);
-router.patch('/:id', updateStudentHandler);
-router.delete('/:id', deleteStudentHandler);
+// Protected routes - require authentication
+// Admins and institutes can manage students, teachers can update/delete their own students
+router.post('/', authenticateToken, requireRole(['admin']), createStudentHandler);
+router.get('/', authenticateToken, listStudentsHandler);
+router.get('/:id', authenticateToken, getStudentByIdHandler);
+router.patch('/:id', authenticateToken, requireRole(['admin']), updateStudentHandler);
+router.delete('/:id', authenticateToken, requireRole(['admin']), deleteStudentHandler);
 
 export default router;
 
