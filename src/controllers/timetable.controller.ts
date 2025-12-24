@@ -39,7 +39,7 @@ export async function getAllTimetablesHandler(req: Request, res: Response): Prom
 
 export async function getTimetableByIdHandler(req: Request, res: Response): Promise<void> {
   try {
-    const timetable = await getTimetableById(req.params.id);
+    const timetable = await getTimetableById(req.params.id!);
     if (!timetable) {
       res.status(404).json({ success: false, message: 'Timetable not found' });
       return;
@@ -55,7 +55,7 @@ export async function getTimetableByTeacherHandler(req: Request, res: Response):
     const { teacherId } = req.params;
     const { dayOfWeek } = req.query;
     
-    const timetables = await getTimetableByTeacher(teacherId, dayOfWeek as string);
+    const timetables = await getTimetableByTeacher(teacherId!, dayOfWeek as string);
     res.json({ success: true, data: timetables });
   } catch (error: any) {
     res.status(400).json({ success: false, message: error.message });
@@ -67,7 +67,7 @@ export async function getTimetableByStudentHandler(req: Request, res: Response):
     const { studentId } = req.params;
     const { dayOfWeek } = req.query;
     
-    const timetables = await getTimetableByStudent(studentId, dayOfWeek as string);
+    const timetables = await getTimetableByStudent(studentId!, dayOfWeek as string);
     res.json({ success: true, data: timetables });
   } catch (error: any) {
     res.status(400).json({ success: false, message: error.message });
@@ -76,7 +76,7 @@ export async function getTimetableByStudentHandler(req: Request, res: Response):
 
 export async function updateTimetableHandler(req: Request, res: Response): Promise<void> {
   try {
-    const updated = await updateTimetable(req.params.id, req.body);
+    const updated = await updateTimetable(req.params.id!, req.body);
     if (!updated) {
       res.status(404).json({ success: false, message: 'Timetable not found' });
       return;
@@ -89,7 +89,7 @@ export async function updateTimetableHandler(req: Request, res: Response): Promi
 
 export async function deleteTimetableHandler(req: Request, res: Response): Promise<void> {
   try {
-    const deleted = await deleteTimetable(req.params.id);
+    const deleted = await deleteTimetable(req.params.id!);
     if (!deleted) {
       res.status(404).json({ success: false, message: 'Timetable not found' });
       return;

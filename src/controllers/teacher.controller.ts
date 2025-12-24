@@ -49,7 +49,7 @@ export async function listTeachersHandler(req: AuthRequest, res: Response): Prom
 
 export async function getTeacherByIdHandler(req: AuthRequest, res: Response): Promise<void> {
   try {
-    const teacher = await getTeacherById(req.params.id);
+    const teacher = await getTeacherById(req.params.id!);
     if (!teacher) {
       res.status(404).json({ success: false, message: 'Teacher not found' });
       return;
@@ -74,13 +74,13 @@ export async function updateTeacherHandler(req: AuthRequest, res: Response): Pro
     }
     // If admin, verify ownership
     if (req.user.role === 'admin') {
-      const teacher = await getTeacherById(req.params.id);
+      const teacher = await getTeacherById(req.params.id!);
       if (!teacher || teacher.institute?.toString() !== req.user.id) {
         res.status(403).json({ success: false, message: 'You can only update your own teachers' });
         return;
       }
     }
-    const updated = await updateTeacher(req.params.id, req.body);
+    const updated = await updateTeacher(req.params.id!, req.body);
     if (!updated) {
       res.status(404).json({ success: false, message: 'Teacher not found' });
       return;
@@ -100,13 +100,13 @@ export async function deleteTeacherHandler(req: AuthRequest, res: Response): Pro
     }
     // If admin, verify ownership
     if (req.user.role === 'admin') {
-      const teacher = await getTeacherById(req.params.id);
+      const teacher = await getTeacherById(req.params.id!);
       if (!teacher || teacher.institute?.toString() !== req.user.id) {
         res.status(403).json({ success: false, message: 'You can only delete your own teachers' });
         return;
       }
     }
-    const deleted = await deleteTeacher(req.params.id);
+    const deleted = await deleteTeacher(req.params.id!);
     if (!deleted) {
       res.status(404).json({ success: false, message: 'Teacher not found' });
       return;
@@ -138,7 +138,7 @@ export async function getStudentByTeacherHandler(req: AuthRequest, res: Response
       res.status(403).json({ success: false, message: 'Only teachers can view their students' });
       return;
     }
-    const student = await getStudentByTeacher(req.user.id, req.params.id);
+    const student = await getStudentByTeacher(req.user.id, req.params.id!);
     if (!student) {
       res.status(404).json({ success: false, message: 'Student not found' });
       return;

@@ -5,9 +5,9 @@ import { TeacherModel } from '../models/Teacher.model';
 import { AdminModel } from '../models/Admin.model';
 import { SuperAdminModel } from '../models/SuperAdmin.model';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
-const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '7d';
 const DEFAULT_OTP = '4444';
+
+
 
 export interface RegisterData {
   firstName: string;
@@ -51,7 +51,9 @@ export const comparePassword = async (password: string, hashedPassword: string):
 };
 
 export const generateToken = (id: string): string => {
-  return jwt.sign({ id }, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
+  const secret = process.env.JWT_SECRET || 'your-secret-key';
+  const expiresIn = process.env.JWT_EXPIRES_IN || '7d';
+  return jwt.sign({ id }, secret, { expiresIn });
 };
 
 export const generateOTP = (): string => {
@@ -262,7 +264,7 @@ export const registerAdmin = async (data: RegisterData): Promise<AuthResponse> =
   const otp = generateOTP();
   const otpExpiry = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
 
-  // Create admin with institute details
+  // Create admin
   const admin = new AdminModel({
     firstName,
     lastName,
@@ -271,7 +273,7 @@ export const registerAdmin = async (data: RegisterData): Promise<AuthResponse> =
     otp,
     otpExpiry,
     isEmailVerified: false,
-    ...otherData // This includes instituteName, address, etc.
+    ...otherData // This includes name, address, etc.
   });
 
   await admin.save();

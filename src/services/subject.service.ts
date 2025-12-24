@@ -41,9 +41,4 @@ export async function getSubjectsByTeacher(teacherId: string): Promise<Subject[]
         .exec();
 }
 
-export async function getSubjectsByInstitute(instituteId: string): Promise<Subject[]> {
-    return await SubjectModel.find({ instituteId, isActive: true })
-        .populate('teacherId', 'firstName lastName email')
-        .sort({ name: 1 })
-        .exec();
-}
+

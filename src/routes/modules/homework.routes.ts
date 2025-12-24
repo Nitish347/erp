@@ -7,7 +7,7 @@ const router = Router();
 // All routes require authentication
 router.use(authenticateToken);
 
-// Create homework - Teachers, Admins, Institutes
+// Create homework - Teachers and Admins
 router.post(
     '/',
     requireRole(['teacher', 'admin']),
@@ -20,14 +20,14 @@ router.get('/', homeworkController.listHomeworkHandler);
 // Get homework by ID - All roles
 router.get('/:id', homeworkController.getHomeworkByIdHandler);
 
-// Update homework - Teachers (own), Admins, Institutes
+// Update homework - Teachers (own) and Admins
 router.put(
     '/:id',
     requireRole(['teacher', 'admin']),
     homeworkController.updateHomeworkHandler
 );
 
-// Delete homework - Teachers (own), Admins, Institutes
+// Delete homework - Teachers (own) and Admins
 router.delete(
     '/:id',
     requireRole(['teacher', 'admin']),

@@ -5,11 +5,6 @@ import {
   getAdminByIdHandler,
   listAdminsHandler,
   updateAdminHandler,
-  createInstituteHandler,
-  listInstitutesHandler,
-  getInstituteByIdHandler,
-  updateInstituteHandler,
-  deleteInstituteHandler,
   getAllTeachersHandler,
   getAllStudentsHandler,
 } from '../../controllers/admin.controller';
@@ -24,12 +19,7 @@ router.get('/:id', authenticateToken, requireRole(['admin']), getAdminByIdHandle
 router.patch('/:id', authenticateToken, requireRole(['admin']), updateAdminHandler);
 router.delete('/:id', authenticateToken, requireRole(['admin']), deleteAdminHandler);
 
-// Admin managing institutes
-router.post('/institutes', authenticateToken, requireRole(['admin']), createInstituteHandler);
-router.get('/institutes', authenticateToken, requireRole(['admin']), listInstitutesHandler);
-router.get('/institutes/:id', authenticateToken, requireRole(['admin']), getInstituteByIdHandler);
-router.patch('/institutes/:id', authenticateToken, requireRole(['admin']), updateInstituteHandler);
-router.delete('/institutes/:id', authenticateToken, requireRole(['admin']), deleteInstituteHandler);
+
 
 // Admin viewing all teachers and students
 router.get('/teachers/all', authenticateToken, requireRole(['admin']), getAllTeachersHandler);

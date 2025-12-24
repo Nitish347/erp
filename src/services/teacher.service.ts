@@ -25,21 +25,20 @@ export async function deleteTeacher(id: string): Promise<Teacher | null> {
 
 // Teacher-specific operations - can only manage students assigned to them
 export async function createStudentByTeacher(teacherId: string, data: any) {
-  // Get teacher to find their institute
   const teacher = await TeacherModel.findById(teacherId);
   if (!teacher) {
     throw new Error('Teacher not found');
   }
-  const student = new StudentModel({ ...data, institute: teacher.institute, teacher: teacherId });
+  const student = new StudentModel({ ...data, teacher: teacherId });
   return await student.save();
 }
 
 export async function listStudentsByTeacher(teacherId: string) {
-  return await StudentModel.find({ teacher: teacherId }).select('-password').populate('institute', 'name email');
+  return await StudentModel.find({ teacher: teacherId }).select('-password');
 }
 
 export async function getStudentByTeacher(teacherId: string, studentId: string) {
-  return await StudentModel.findOne({ _id: studentId, teacher: teacherId }).select('-password').populate('institute', 'name email');
+  return await StudentModel.findOne({ _id: studentId, teacher: teacherId }).select('-password');
 }
 
 export async function updateStudentByTeacher(teacherId: string, studentId: string, data: any) {

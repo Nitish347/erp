@@ -33,4 +33,11 @@ router.delete(
     classController.deleteClassHandler
 );
 
+// Add section - Admins only
+router.patch(
+    '/:id/sections',
+    requireRole(['admin']),
+    classController.addSectionHandler
+);
+
 export default router;

@@ -62,8 +62,9 @@ export const authenticateToken = async (
     };
 
     next();
-  } catch (error) {
-    res.status(403).json({ success: false, message: 'Invalid or expired token' });
+  } catch (error: any) {
+    console.error('JWT Verification Error:', error.message);
+    res.status(403).json({ success: false, message: 'Invalid or expired token', error: error.message });
   }
 };
 

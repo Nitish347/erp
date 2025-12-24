@@ -13,7 +13,7 @@ import { authenticateToken, requireRole } from '../../middlewares/auth';
 const router = Router();
 
 // Protected routes - require authentication
-// Admins and institutes can manage teachers
+// Admins can manage teachers
 router.post('/', authenticateToken, requireRole(['admin']), createTeacherHandler);
 router.get('/', authenticateToken, listTeachersHandler);
 

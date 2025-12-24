@@ -11,7 +11,7 @@ import { authenticateToken, requireRole } from '../../middlewares/auth';
 const router = Router();
 
 // Protected routes - require authentication
-// Admins and institutes can manage students, teachers can update/delete their own students
+// Admins can manage students, teachers can update/delete their own students
 router.post('/', authenticateToken, requireRole(['admin']), createStudentHandler);
 router.get('/', authenticateToken, listStudentsHandler);
 router.get('/:id', authenticateToken, getStudentByIdHandler);

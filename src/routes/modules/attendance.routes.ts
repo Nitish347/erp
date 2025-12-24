@@ -23,7 +23,7 @@ router.get('/teacher/:teacherId', authenticateToken, getAttendanceByTeacherHandl
 router.get('/student/:studentId', authenticateToken, getAttendanceByStudentHandler);
 router.get('/:id', authenticateToken, getAttendanceByIdHandler);
 
-// Protected routes - Attendance can be managed by teachers and institutes
+// Protected routes - Attendance can be managed by teachers and admins
 router.post('/', authenticateToken, requireRole(['teacher', 'admin']), markAttendanceHandler);
 router.post('/bulk', authenticateToken, requireRole(['teacher', 'admin']), bulkMarkAttendanceHandler);
 router.patch('/:id', authenticateToken, requireRole(['teacher', 'admin']), updateAttendanceHandler);

@@ -28,16 +28,20 @@ export async function deleteClass(id: string): Promise<Class | null> {
     return await ClassModel.findByIdAndDelete(id).exec();
 }
 
-export async function getClassesByInstitute(instituteId: string): Promise<Class[]> {
-    return await ClassModel.find({ instituteId, isActive: true })
-        .populate('teacherId', 'firstName lastName email')
-        .sort({ grade: 1, name: 1 })
-        .exec();
-}
 
-export async function getClassesByGrade(instituteId: string, grade: string): Promise<Class[]> {
-    return await ClassModel.find({ instituteId, grade, isActive: true })
+
+
+export async function getClassesByGrade(grade: string): Promise<Class[]> {
+    return await ClassModel.find({ grade, isActive: true })
         .populate('teacherId', 'firstName lastName email')
         .sort({ name: 1 })
         .exec();
+}
+
+export async function addSection(id: string, section: string): Promise<Class | null> {
+    return await ClassModel.findByIdAndUpdate(
+        id,
+        { $addToSet: { sections: section } },
+        { new: true }
+    ).exec();
 }

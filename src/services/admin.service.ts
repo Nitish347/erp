@@ -35,33 +35,14 @@ export async function deleteAdmin(id: string): Promise<Admin | null> {
     .lean<Admin | null>();
 }
 
-// Institute management wrappers
-export async function createInstituteByAdmin(adminId: string, data: Partial<Admin>): Promise<Admin> {
-  return createAdmin(data);
-}
 
-export async function listInstitutesByAdmin(adminId: string): Promise<Admin[]> {
-  return listAdmins();
-}
-
-export async function getInstituteByAdmin(adminId: string, instituteId: string): Promise<Admin | null> {
-  return getAdminById(instituteId);
-}
-
-export async function updateInstituteByAdmin(adminId: string, instituteId: string, updates: UpdateQuery<Admin>): Promise<Admin | null> {
-  return updateAdmin(instituteId, updates);
-}
-
-export async function deleteInstituteByAdmin(adminId: string, instituteId: string): Promise<Admin | null> {
-  return deleteAdmin(instituteId);
-}
 
 // Admin can view all teachers and students
 export async function getAllTeachersForAdmin() {
-  return await TeacherModel.find().select('-password').populate('institute', 'name email');
+  return await TeacherModel.find().select('-password');
 }
 
 export async function getAllStudentsForAdmin() {
-  return await StudentModel.find().select('-password').populate('institute', 'name email').populate('teacher', 'firstName lastName email');
+  return await StudentModel.find().select('-password').populate('teacher', 'firstName lastName email');
 }
 
