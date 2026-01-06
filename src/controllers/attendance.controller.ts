@@ -23,17 +23,18 @@ export async function markAttendanceHandler(req: Request, res: Response): Promis
 
 export async function getAllAttendanceHandler(req: Request, res: Response): Promise<void> {
   try {
-    const queryFilters: any = {};
-    if (req.query.teacherId) queryFilters.teacherId = req.query.teacherId as string;
-    if (req.query.studentId) queryFilters.studentId = req.query.studentId as string;
-    if (req.query.startDate) queryFilters.startDate = new Date(req.query.startDate as string);
-    if (req.query.endDate) queryFilters.endDate = new Date(req.query.endDate as string);
-    if (req.query.status) queryFilters.status = req.query.status as string;
-    if (req.query.subject) queryFilters.subject = req.query.subject as string;
-    if (req.query.class) queryFilters.class = req.query.class as string;
-    if (req.query.section) queryFilters.section = req.query.section as string;
+    const filters = {
+      teacherId: req.query.teacherId as string,
+      studentId: req.query.studentId as string,
+      startDate: req.query.startDate ? new Date(req.query.startDate as string) : undefined,
+      endDate: req.query.endDate ? new Date(req.query.endDate as string) : undefined,
+      status: req.query.status as string,
+      subject: req.query.subject as string,
+      class: req.query.class as string,
+      section: req.query.section as string
+    };
 
-    const attendance = await getAllAttendance(queryFilters);
+    const attendance = await getAllAttendance(filters);
     res.json({ success: true, data: attendance });
   } catch (error: any) {
     res.status(400).json({ success: false, message: error.message });
@@ -59,7 +60,7 @@ export async function getAttendanceByTeacherHandler(req: Request, res: Response)
     const startDate = req.query.startDate ? new Date(req.query.startDate as string) : undefined;
     const endDate = req.query.endDate ? new Date(req.query.endDate as string) : undefined;
     
-    const attendance = await getAttendanceByTeacher(teacherId!, startDate, endDate);
+    const attendance = await getAttendanceByTeacher(teacherId, startDate, endDate);
     res.json({ success: true, data: attendance });
   } catch (error: any) {
     res.status(400).json({ success: false, message: error.message });
@@ -72,7 +73,7 @@ export async function getAttendanceByStudentHandler(req: Request, res: Response)
     const startDate = req.query.startDate ? new Date(req.query.startDate as string) : undefined;
     const endDate = req.query.endDate ? new Date(req.query.endDate as string) : undefined;
     
-    const attendance = await getAttendanceByStudent(studentId!, startDate, endDate);
+    const attendance = await getAttendanceByStudent(studentId, startDate, endDate);
     res.json({ success: true, data: attendance });
   } catch (error: any) {
     res.status(400).json({ success: false, message: error.message });
@@ -81,7 +82,7 @@ export async function getAttendanceByStudentHandler(req: Request, res: Response)
 
 export async function updateAttendanceHandler(req: Request, res: Response): Promise<void> {
   try {
-    const updated = await updateAttendance(req.params.id!, req.body);
+    const updated = await updateAttendance(req.params.id, req.body);
     if (!updated) {
       res.status(404).json({ success: false, message: 'Attendance record not found' });
       return;
@@ -94,7 +95,7 @@ export async function updateAttendanceHandler(req: Request, res: Response): Prom
 
 export async function deleteAttendanceHandler(req: Request, res: Response): Promise<void> {
   try {
-    const deleted = await deleteAttendance(req.params.id!);
+    const deleted = await deleteAttendance(req.params.id);
     if (!deleted) {
       res.status(404).json({ success: false, message: 'Attendance record not found' });
       return;
@@ -126,7 +127,7 @@ export async function getDailyAttendanceHandler(req: Request, res: Response): Pr
     const classFilter = req.query.class as string;
     const section = req.query.section as string;
 
-    const attendanceDate = new Date(date!);
+    const attendanceDate = new Date(date);
     const attendance = await getDailyAttendance(attendanceDate, teacherId, classFilter, section);
     res.json({ success: true, data: attendance });
   } catch (error: any) {
