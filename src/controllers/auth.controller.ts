@@ -3,9 +3,11 @@ import {
   registerStudent,
   registerTeacher,
   registerAdmin,
+  registerSuperAdmin,
   loginStudent,
   loginTeacher,
   loginAdmin,
+  loginSuperAdmin,
   verifyOTP,
   resendOTP
 } from '../services/auth.service';
@@ -123,6 +125,22 @@ export async function registerAdminHandler(req: Request, res: Response): Promise
   }
 }
 
+export async function registerSuperAdminHandler(req: Request, res: Response): Promise<void> {
+  try {
+    const result = await registerSuperAdmin(req.body);
+    res.status(201).json({
+      success: true,
+      message: 'Super Admin registered successfully.',
+      data: result
+    });
+  } catch (error: any) {
+    res.status(400).json({
+      success: false,
+      message: error.message
+    });
+  }
+}
+
 
 
 export async function loginAdminHandler(req: Request, res: Response): Promise<void> {
@@ -131,6 +149,22 @@ export async function loginAdminHandler(req: Request, res: Response): Promise<vo
     res.json({
       success: true,
       message: 'Admin logged in successfully',
+      data: result
+    });
+  } catch (error: any) {
+    res.status(401).json({
+      success: false,
+      message: error.message
+    });
+  }
+}
+
+export async function loginSuperAdminHandler(req: Request, res: Response): Promise<void> {
+  try {
+    const result = await loginSuperAdmin(req.body);
+    res.json({
+      success: true,
+      message: 'Super Admin logged in successfully',
       data: result
     });
   } catch (error: any) {

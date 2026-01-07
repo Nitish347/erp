@@ -1,6 +1,7 @@
 import { AttendanceModel } from '../models/Attendance.model';
 import { TeacherModel } from '../models/Teacher.model';
 import { StudentModel } from '../models/Student.model';
+import { AdminModel } from '../models/Admin.model';
 
 export interface CreateAttendanceData {
   teacherId: string;
@@ -25,9 +26,13 @@ export interface AttendanceStats {
 
 export const markAttendance = async (data: CreateAttendanceData) => {
   // Validate teacher exists
-  const teacher = await TeacherModel.findById(data.teacherId);
+  let teacher: any = await TeacherModel.findById(data.teacherId);
   if (!teacher) {
-    throw new Error('Teacher not found');
+    // Check if it is an Admin (Institution) instead
+    teacher = await AdminModel.findById(data.teacherId);
+    if (!teacher) {
+      throw new Error('Teacher or Institution not found');
+    }
   }
 
   // Validate student exists if provided

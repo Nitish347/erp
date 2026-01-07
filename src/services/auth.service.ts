@@ -294,6 +294,46 @@ export const registerAdmin = async (data: RegisterData): Promise<AuthResponse> =
   };
 };
 
+export const registerSuperAdmin = async (data: RegisterData): Promise<AuthResponse> => {
+  const { email, password, firstName, lastName, phone } = data;
+
+  // Check if super admin already exists
+  const existingSuperAdmin = await SuperAdminModel.findOne({ email });
+  if (existingSuperAdmin) {
+    throw new Error('Super Admin with this email already exists');
+  }
+
+  // Hash password
+  const hashedPassword = await hashPassword(password);
+
+  // Create super admin
+  const superAdmin = new SuperAdminModel({
+    firstName,
+    lastName,
+    email,
+    password: hashedPassword,
+    phone,
+    isEmailVerified: true // Auto-verify super admin
+  });
+
+  await superAdmin.save();
+
+  // Generate token
+  const token = generateToken((superAdmin._id as any).toString());
+
+  return {
+    user: {
+      id: (superAdmin._id as any).toString(),
+      firstName: superAdmin.firstName,
+      lastName: superAdmin.lastName,
+      email: superAdmin.email,
+      role: 'super_admin',
+      isEmailVerified: superAdmin.isEmailVerified
+    },
+    token
+  };
+};
+
 
 
 export const loginAdmin = async (data: LoginData): Promise<AuthResponse> => {
@@ -326,6 +366,37 @@ export const loginAdmin = async (data: LoginData): Promise<AuthResponse> => {
       email: admin.email,
       role: 'admin',
       isEmailVerified: admin.isEmailVerified
+    },
+    token
+  };
+};
+
+export const loginSuperAdmin = async (data: LoginData): Promise<AuthResponse> => {
+  const { email, password } = data;
+
+  // Find super admin
+  const superAdmin = await SuperAdminModel.findOne({ email });
+  if (!superAdmin) {
+    throw new Error('Invalid email or password');
+  }
+
+  // Check password
+  const isPasswordValid = await comparePassword(password, superAdmin.password);
+  if (!isPasswordValid) {
+    throw new Error('Invalid email or password');
+  }
+
+  // Generate token
+  const token = generateToken((superAdmin._id as any).toString());
+
+  return {
+    user: {
+      id: (superAdmin._id as any).toString(),
+      firstName: superAdmin.firstName,
+      lastName: superAdmin.lastName,
+      email: superAdmin.email,
+      role: 'super_admin',
+      isEmailVerified: superAdmin.isEmailVerified
     },
     token
   };

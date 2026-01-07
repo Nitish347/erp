@@ -15,6 +15,7 @@ import medicalRecordRouter from './modules/medicalRecord.routes';
 import classRouter from './modules/class.routes';
 import subjectRouter from './modules/subject.routes';
 import feeRouter from './modules/fee.routes';
+import superAdminRouter from './modules/super-admin.routes';
 
 export function registerRoutes(app: Application): void {
   const apiRoot = '/api/v1';
@@ -22,6 +23,7 @@ export function registerRoutes(app: Application): void {
 
   router.use('/health', healthRouter);
   router.use('/auth', authRouter);
+  router.use('/super-admin', superAdminRouter);
   router.use('/admin', adminRouter);
   router.use('/teachers', teacherRouter);
   router.use('/students', studentRouter);

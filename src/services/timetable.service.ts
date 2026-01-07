@@ -16,18 +16,18 @@ export interface CreateTimetableData {
 
 export const createTimetable = async (data: CreateTimetableData) => {
   // Validate teacher exists
-  const teacher = await TeacherModel.findById(data.teacherId);
-  if (!teacher) {
-    throw new Error('Teacher not found');
-  }
+  // const teacher = await TeacherModel.findById(data.teacherId);
+  // if (!teacher) {
+  //   throw new Error('Teacher not found');
+  // }
 
-  // Validate student exists if provided
-  if (data.studentId) {
-    const student = await StudentModel.findById(data.studentId);
-    if (!student) {
-      throw new Error('Student not found');
-    }
-  }
+  // // Validate student exists if provided
+  // if (data.studentId) {
+  //   const student = await StudentModel.findById(data.studentId);
+  //   if (!student) {
+  //     throw new Error('Student not found');
+  //   }
+  // }
 
   // Check for time conflicts
   const conflict = await TimetableModel.findOne({

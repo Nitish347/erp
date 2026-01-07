@@ -20,6 +20,11 @@ router.get('/teacher/:teacherId', authenticateToken, getTimetableByTeacherHandle
 router.get('/student/:studentId', authenticateToken, getTimetableByStudentHandler);
 router.get('/:id', authenticateToken, getTimetableByIdHandler);
 
+// General CRUD routes (for admin use)
+router.post('/', authenticateToken, requireRole(['admin']), createTimetableHandler);
+router.put('/:id', authenticateToken, requireRole(['admin']), updateTimetableHandler);
+router.delete('/:id', authenticateToken, requireRole(['admin']), deleteTimetableHandler);
+
 // Protected routes - Teacher timetables can only be updated by admins
 router.post('/teacher', authenticateToken, requireRole(['admin']), createTimetableHandler);
 router.patch('/teacher/:id', authenticateToken, requireRole(['admin']), updateTimetableHandler);

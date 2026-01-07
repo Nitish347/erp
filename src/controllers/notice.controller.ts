@@ -12,6 +12,11 @@ export async function createNoticeHandler(req: AuthRequest, res: Response): Prom
         req.body.issuedBy = req.user!.id;
         req.body.issuedByRole = req.user!.role === 'teacher' ? 'teacher' : 'admin';
         req.body.issuedDate = new Date();
+        
+        // Set instituteId from authenticated admin user
+        if (req.user!.role === 'admin' || req.user!.role === 'super_admin') {
+            req.body.instituteId = req.user!.id;
+        }
 
         const notice = await noticeService.createNotice(req.body);
         res.status(201).json({ success: true, data: notice });

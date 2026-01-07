@@ -1,11 +1,13 @@
 import mongoose, { Schema, Document, Model } from 'mongoose';
 
-export interface Teacher extends Document {
+export interface ITeacher extends Document {
+  _id: mongoose.Types.ObjectId;
   firstName: string;
   lastName: string;
   email: string;
   password: string;
   phone?: string;
+  address?: string;
   department?: string;
   hireDate?: Date;
   institute: mongoose.Types.ObjectId; // Reference to Admin (Institute)
@@ -16,16 +18,17 @@ export interface Teacher extends Document {
   updatedAt: Date;
 }
 
-const TeacherSchema: Schema<Teacher> = new Schema(
+const TeacherSchema: Schema<ITeacher> = new Schema(
   {
-    firstName: { type: String, required: true, trim: true },
-    lastName: { type: String, required: true, trim: true },
-    email: { type: String, required: true, unique: true, lowercase: true, trim: true },
+    firstName: { type: String, required: true },
+    lastName: { type: String, required: true },
+    email: { type: String, required: true, unique: true, lowercase: true },
     password: { type: String, required: true, minlength: 6 },
     phone: { type: String },
+    address: { type: String },
     department: { type: String },
     hireDate: { type: Date },
-    institute: { type: Schema.Types.ObjectId, ref: 'Admin', required: true },
+    institute: { type: mongoose.Schema.Types.ObjectId, ref: 'Admin', required: true },
     isEmailVerified: { type: Boolean, default: false },
     otp: { type: String },
     otpExpiry: { type: Date },
@@ -33,7 +36,7 @@ const TeacherSchema: Schema<Teacher> = new Schema(
   { timestamps: true }
 );
 
-export const TeacherModel: Model<Teacher> =
-  mongoose.models.Teacher || mongoose.model<Teacher>('Teacher', TeacherSchema);
+export const TeacherModel: Model<ITeacher> =
+  mongoose.models.Teacher || mongoose.model<ITeacher>('Teacher', TeacherSchema);
 
 
