@@ -9,6 +9,7 @@ import adminRouter from './modules/admin.routes';
 import homeworkRouter from './modules/homework.routes';
 import homeworkSubmissionRouter from './modules/homeworkSubmission.routes';
 import examRouter from './modules/exam.routes';
+import examTypeRouter from './modules/examType.routes';
 import examResultRouter from './modules/examResult.routes';
 import noticeRouter from './modules/notice.routes';
 import medicalRecordRouter from './modules/medicalRecord.routes';
@@ -32,6 +33,7 @@ export function registerRoutes(app: Application): void {
   router.use('/homework', homeworkRouter);
   router.use('/homework-submissions', homeworkSubmissionRouter);
   router.use('/exams', examRouter);
+  router.use('/exam-types', examTypeRouter);
   router.use('/exam-results', examResultRouter);
   router.use('/notices', noticeRouter);
   router.use('/medical-records', medicalRecordRouter);

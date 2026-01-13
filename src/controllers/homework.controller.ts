@@ -11,8 +11,22 @@ export async function createHomeworkHandler(req: AuthRequest, res: Response): Pr
             return;
         }
 
-        // If teacher, set teacherId automatically
+        // Automatically set teacherId and instituteId based on user role
         if (req.user.role === 'teacher') {
+            req.body.teacherId = req.user.id;
+            // For teachers, fetch their institute from the teacher model
+            const { TeacherModel } = await import('../models/Teacher.model');
+            const teacher = await TeacherModel.findById(req.user.id);
+            if (!teacher) {
+                res.status(404).json({ success: false, message: 'Teacher not found' });
+                return;
+            }
+            req.body.instituteId = teacher.institute;
+            req.body.teacherId = teacher.id;
+        } else if (req.user.role === 'admin' || req.user.role === 'super_admin') {
+            // For admins, their ID IS the instituteId (merged model)
+            req.body.instituteId = req.user.id;
+            // Also set teacherId to admin's ID for admin-created homework
             req.body.teacherId = req.user.id;
         }
 

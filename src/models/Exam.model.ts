@@ -1,6 +1,7 @@
 import mongoose, { Schema, Document, Model } from 'mongoose';
 
 export interface Exam extends Document {
+    examTypeId: mongoose.Types.ObjectId;
     name: string;
     type: 'quiz' | 'mid-term' | 'final' | 'assignment';
     subject: string;
@@ -20,6 +21,7 @@ export interface Exam extends Document {
 
 const ExamSchema: Schema<Exam> = new Schema(
     {
+        examTypeId: { type: Schema.Types.ObjectId, ref: 'ExamType', required: true },
         name: { type: String, required: true, trim: true },
         type: { type: String, enum: ['quiz', 'mid-term', 'final', 'assignment'], required: true },
         subject: { type: String, required: true },

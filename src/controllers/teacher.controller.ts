@@ -24,7 +24,7 @@ export async function createTeacherHandler(req: AuthRequest, res: Response): Pro
     }
     const teacher = await createTeacher(req.body);
     const teacherData = teacher.toObject();
-    delete teacherData.password;
+    // delete teacherData.password;
     res.status(201).json({ success: true, data: teacherData });
   } catch (error: any) {
     res.status(400).json({ success: false, message: error.message });
