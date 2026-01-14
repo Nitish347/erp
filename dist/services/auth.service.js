@@ -3,15 +3,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.resendOTP = exports.loginAdmin = exports.registerAdmin = exports.verifyOTP = exports.loginTeacher = exports.loginStudent = exports.registerTeacher = exports.registerStudent = exports.generateOTP = exports.generateToken = exports.comparePassword = exports.hashPassword = void 0;
+exports.resendOTP = exports.loginSuperAdmin = exports.loginAdmin = exports.registerSuperAdmin = exports.registerAdmin = exports.verifyOTP = exports.loginTeacher = exports.loginStudent = exports.registerTeacher = exports.registerStudent = exports.generateOTP = exports.generateToken = exports.comparePassword = exports.hashPassword = void 0;
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const Student_model_1 = require("../models/Student.model");
 const Teacher_model_1 = require("../models/Teacher.model");
 const Admin_model_1 = require("../models/Admin.model");
 const SuperAdmin_model_1 = require("../models/SuperAdmin.model");
-const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
-const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '7d';
 const DEFAULT_OTP = '4444';
 const hashPassword = async (password) => {
     const saltRounds = 12;
@@ -23,7 +21,9 @@ const comparePassword = async (password, hashedPassword) => {
 };
 exports.comparePassword = comparePassword;
 const generateToken = (id) => {
-    return jsonwebtoken_1.default.sign({ id }, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
+    const secret = process.env.JWT_SECRET || 'your-secret-key';
+    const expiresIn = process.env.JWT_EXPIRES_IN || '7d';
+    return jsonwebtoken_1.default.sign({ id }, secret, { expiresIn });
 };
 exports.generateToken = generateToken;
 const generateOTP = () => {
@@ -231,6 +231,40 @@ const registerAdmin = async (data) => {
     };
 };
 exports.registerAdmin = registerAdmin;
+const registerSuperAdmin = async (data) => {
+    const { email, password, firstName, lastName, phone } = data;
+    // Check if super admin already exists
+    const existingSuperAdmin = await SuperAdmin_model_1.SuperAdminModel.findOne({ email });
+    if (existingSuperAdmin) {
+        throw new Error('Super Admin with this email already exists');
+    }
+    // Hash password
+    const hashedPassword = await (0, exports.hashPassword)(password);
+    // Create super admin
+    const superAdmin = new SuperAdmin_model_1.SuperAdminModel({
+        firstName,
+        lastName,
+        email,
+        password: hashedPassword,
+        phone,
+        isEmailVerified: true // Auto-verify super admin
+    });
+    await superAdmin.save();
+    // Generate token
+    const token = (0, exports.generateToken)(superAdmin._id.toString());
+    return {
+        user: {
+            id: superAdmin._id.toString(),
+            firstName: superAdmin.firstName,
+            lastName: superAdmin.lastName,
+            email: superAdmin.email,
+            role: 'super_admin',
+            isEmailVerified: superAdmin.isEmailVerified
+        },
+        token
+    };
+};
+exports.registerSuperAdmin = registerSuperAdmin;
 const loginAdmin = async (data) => {
     const { email, password } = data;
     // Find admin
@@ -261,6 +295,33 @@ const loginAdmin = async (data) => {
     };
 };
 exports.loginAdmin = loginAdmin;
+const loginSuperAdmin = async (data) => {
+    const { email, password } = data;
+    // Find super admin
+    const superAdmin = await SuperAdmin_model_1.SuperAdminModel.findOne({ email });
+    if (!superAdmin) {
+        throw new Error('Invalid email or password');
+    }
+    // Check password
+    const isPasswordValid = await (0, exports.comparePassword)(password, superAdmin.password);
+    if (!isPasswordValid) {
+        throw new Error('Invalid email or password');
+    }
+    // Generate token
+    const token = (0, exports.generateToken)(superAdmin._id.toString());
+    return {
+        user: {
+            id: superAdmin._id.toString(),
+            firstName: superAdmin.firstName,
+            lastName: superAdmin.lastName,
+            email: superAdmin.email,
+            role: 'super_admin',
+            isEmailVerified: superAdmin.isEmailVerified
+        },
+        token
+    };
+};
+exports.loginSuperAdmin = loginSuperAdmin;
 const resendOTP = async (userId, role) => {
     let user;
     if (role === 'admin') {

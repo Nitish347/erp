@@ -1,5 +1,6 @@
 import mongoose, { Document, Model } from 'mongoose';
 export interface Exam extends Document {
+    examTypeId: mongoose.Types.ObjectId;
     name: string;
     type: 'quiz' | 'mid-term' | 'final' | 'assignment';
     subject: string;

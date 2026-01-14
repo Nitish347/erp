@@ -1,0 +1,26 @@
+import { Response } from 'express';
+import { AuthRequest } from '../middlewares/auth';
+export declare function getDashboardStatsHandler(req: AuthRequest, res: Response): Promise<void>;
+export declare function listAllSchoolsHandler(req: AuthRequest, res: Response): Promise<void>;
+export declare function getSchoolDetailsHandler(req: AuthRequest, res: Response): Promise<void>;
+export declare function updateSchoolHandler(req: AuthRequest, res: Response): Promise<void>;
+export declare function deleteSchoolHandler(req: AuthRequest, res: Response): Promise<void>;
+export declare function getAllStudentsHandler(req: AuthRequest, res: Response): Promise<void>;
+export declare function getSchoolStudentsHandler(req: AuthRequest, res: Response): Promise<void>;
+export declare function createSchoolStudentHandler(req: AuthRequest, res: Response): Promise<void>;
+export declare function updateStudentHandler(req: AuthRequest, res: Response): Promise<void>;
+export declare function deleteStudentHandler(req: AuthRequest, res: Response): Promise<void>;
+export declare function getAllTeachersHandler(req: AuthRequest, res: Response): Promise<void>;
+export declare function getSchoolTeachersHandler(req: AuthRequest, res: Response): Promise<void>;
+export declare function createSchoolTeacherHandler(req: AuthRequest, res: Response): Promise<void>;
+export declare function updateTeacherHandler(req: AuthRequest, res: Response): Promise<void>;
+export declare function deleteTeacherHandler(req: AuthRequest, res: Response): Promise<void>;
+export declare function getSchoolClassesHandler(req: AuthRequest, res: Response): Promise<void>;
+export declare function getSchoolAttendanceHandler(req: AuthRequest, res: Response): Promise<void>;
+export declare function getSchoolExamsHandler(req: AuthRequest, res: Response): Promise<void>;
+export declare function getSchoolFeesHandler(req: AuthRequest, res: Response): Promise<void>;
+export declare function getSchoolHomeworkHandler(req: AuthRequest, res: Response): Promise<void>;
+export declare function getSchoolNoticesHandler(req: AuthRequest, res: Response): Promise<void>;
+export declare function getSchoolTimetablesHandler(req: AuthRequest, res: Response): Promise<void>;
+export declare function getSchoolMedicalRecordsHandler(req: AuthRequest, res: Response): Promise<void>;
+//# sourceMappingURL=super-admin.controller.d.ts.map

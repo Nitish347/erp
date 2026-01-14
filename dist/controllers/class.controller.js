@@ -38,6 +38,7 @@ exports.listClassesHandler = listClassesHandler;
 exports.getClassByIdHandler = getClassByIdHandler;
 exports.updateClassHandler = updateClassHandler;
 exports.deleteClassHandler = deleteClassHandler;
+exports.addSectionHandler = addSectionHandler;
 const classService = __importStar(require("../services/class.service"));
 async function createClassHandler(req, res) {
     try {
@@ -45,7 +46,11 @@ async function createClassHandler(req, res) {
             res.status(403).json({ success: false, message: 'Only admins can create classes' });
             return;
         }
-        const classData = await classService.createClass(req.body);
+        const classDataToCreate = {
+            ...req.body,
+            instituteId: req.user?.id
+        };
+        const classData = await classService.createClass(classDataToCreate);
         res.status(201).json({ success: true, data: classData });
     }
     catch (error) {
@@ -129,6 +134,33 @@ async function deleteClassHandler(req, res) {
     }
     catch (error) {
         res.status(500).json({ success: false, message: error.message });
+    }
+}
+async function addSectionHandler(req, res) {
+    try {
+        if (!['admin', 'super_admin'].includes(req.user?.role || '')) {
+            res.status(403).json({ success: false, message: 'Only admins can add sections' });
+            return;
+        }
+        const { section } = req.body;
+        if (!section) {
+            res.status(400).json({ success: false, message: 'Section is required' });
+            return;
+        }
+        const classData = await classService.getClassById(req.params.id);
+        if (!classData) {
+            res.status(404).json({ success: false, message: 'Class not found' });
+            return;
+        }
+        if (req.user?.role === 'admin' && classData.instituteId?.toString() !== req.user?.id) {
+            res.status(403).json({ success: false, message: 'Access denied' });
+            return;
+        }
+        const updated = await classService.addSection(req.params.id, section);
+        res.json({ success: true, data: updated });
+    }
+    catch (error) {
+        res.status(400).json({ success: false, message: error.message });
     }
 }
 //# sourceMappingURL=class.controller.js.map

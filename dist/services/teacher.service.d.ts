@@ -1,10 +1,10 @@
 import { FilterQuery, UpdateQuery } from 'mongoose';
-import { Teacher } from '../models/Teacher.model';
-export declare function createTeacher(data: Partial<Teacher>): Promise<Teacher>;
-export declare function listTeachers(filter?: FilterQuery<Teacher>): Promise<Teacher[]>;
-export declare function getTeacherById(id: string): Promise<Teacher | null>;
-export declare function updateTeacher(id: string, updates: UpdateQuery<Teacher>): Promise<Teacher | null>;
-export declare function deleteTeacher(id: string): Promise<Teacher | null>;
+import { ITeacher } from '../models/Teacher.model';
+export declare function createTeacher(data: Partial<ITeacher>): Promise<ITeacher>;
+export declare function listTeachers(filter?: FilterQuery<ITeacher>): Promise<ITeacher[]>;
+export declare function getTeacherById(id: string): Promise<ITeacher | null>;
+export declare function updateTeacher(id: string, updates: UpdateQuery<ITeacher>): Promise<ITeacher | null>;
+export declare function deleteTeacher(id: string): Promise<ITeacher | null>;
 export declare function createStudentByTeacher(teacherId: string, data: any): Promise<import("mongoose").Document<unknown, {}, import("../models/Student.model").Student, {}, {}> & import("../models/Student.model").Student & Required<{
     _id: unknown;
 }> & {

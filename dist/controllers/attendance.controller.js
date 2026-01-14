@@ -22,24 +22,24 @@ async function markAttendanceHandler(req, res) {
 }
 async function getAllAttendanceHandler(req, res) {
     try {
-        const queryFilters = {};
+        const filters = {};
         if (req.query.teacherId)
-            queryFilters.teacherId = req.query.teacherId;
+            filters.teacherId = req.query.teacherId;
         if (req.query.studentId)
-            queryFilters.studentId = req.query.studentId;
+            filters.studentId = req.query.studentId;
         if (req.query.startDate)
-            queryFilters.startDate = new Date(req.query.startDate);
+            filters.startDate = new Date(req.query.startDate);
         if (req.query.endDate)
-            queryFilters.endDate = new Date(req.query.endDate);
+            filters.endDate = new Date(req.query.endDate);
         if (req.query.status)
-            queryFilters.status = req.query.status;
+            filters.status = req.query.status;
         if (req.query.subject)
-            queryFilters.subject = req.query.subject;
+            filters.subject = req.query.subject;
         if (req.query.class)
-            queryFilters.class = req.query.class;
+            filters.class = req.query.class;
         if (req.query.section)
-            queryFilters.section = req.query.section;
-        const attendance = await (0, attendance_service_1.getAllAttendance)(queryFilters);
+            filters.section = req.query.section;
+        const attendance = await (0, attendance_service_1.getAllAttendance)(filters);
         res.json({ success: true, data: attendance });
     }
     catch (error) {
@@ -64,6 +64,10 @@ async function getAttendanceByTeacherHandler(req, res) {
         const { teacherId } = req.params;
         const startDate = req.query.startDate ? new Date(req.query.startDate) : undefined;
         const endDate = req.query.endDate ? new Date(req.query.endDate) : undefined;
+        if (!teacherId) {
+            res.status(400).json({ success: false, message: 'Teacher ID is required' });
+            return;
+        }
         const attendance = await (0, attendance_service_1.getAttendanceByTeacher)(teacherId, startDate, endDate);
         res.json({ success: true, data: attendance });
     }
@@ -76,6 +80,10 @@ async function getAttendanceByStudentHandler(req, res) {
         const { studentId } = req.params;
         const startDate = req.query.startDate ? new Date(req.query.startDate) : undefined;
         const endDate = req.query.endDate ? new Date(req.query.endDate) : undefined;
+        if (!studentId) {
+            res.status(400).json({ success: false, message: 'Student ID is required' });
+            return;
+        }
         const attendance = await (0, attendance_service_1.getAttendanceByStudent)(studentId, startDate, endDate);
         res.json({ success: true, data: attendance });
     }
@@ -85,6 +93,10 @@ async function getAttendanceByStudentHandler(req, res) {
 }
 async function updateAttendanceHandler(req, res) {
     try {
+        if (!req.params.id) {
+            res.status(400).json({ success: false, message: 'Attendance ID is required' });
+            return;
+        }
         const updated = await (0, attendance_service_1.updateAttendance)(req.params.id, req.body);
         if (!updated) {
             res.status(404).json({ success: false, message: 'Attendance record not found' });
@@ -98,6 +110,10 @@ async function updateAttendanceHandler(req, res) {
 }
 async function deleteAttendanceHandler(req, res) {
     try {
+        if (!req.params.id) {
+            res.status(400).json({ success: false, message: 'Attendance ID is required' });
+            return;
+        }
         const deleted = await (0, attendance_service_1.deleteAttendance)(req.params.id);
         if (!deleted) {
             res.status(404).json({ success: false, message: 'Attendance record not found' });
@@ -125,6 +141,10 @@ async function getAttendanceStatsHandler(req, res) {
 async function getDailyAttendanceHandler(req, res) {
     try {
         const { date } = req.params;
+        if (!date) {
+            res.status(400).json({ success: false, message: 'Date is required' });
+            return;
+        }
         const teacherId = req.query.teacherId;
         const classFilter = req.query.class;
         const section = req.query.section;

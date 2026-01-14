@@ -21,7 +21,7 @@ async function createTeacherHandler(req, res) {
         }
         const teacher = await (0, teacher_service_1.createTeacher)(req.body);
         const teacherData = teacher.toObject();
-        delete teacherData.password;
+        // delete teacherData.password;
         res.status(201).json({ success: true, data: teacherData });
     }
     catch (error) {

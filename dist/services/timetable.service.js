@@ -2,21 +2,19 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getTimetableConflicts = exports.deleteTimetable = exports.updateTimetable = exports.getTimetableById = exports.getAllTimetables = exports.getTimetableByStudent = exports.getTimetableByTeacher = exports.createTimetable = void 0;
 const Timetable_model_1 = require("../models/Timetable.model");
-const Teacher_model_1 = require("../models/Teacher.model");
-const Student_model_1 = require("../models/Student.model");
 const createTimetable = async (data) => {
     // Validate teacher exists
-    const teacher = await Teacher_model_1.TeacherModel.findById(data.teacherId);
-    if (!teacher) {
-        throw new Error('Teacher not found');
-    }
-    // Validate student exists if provided
-    if (data.studentId) {
-        const student = await Student_model_1.StudentModel.findById(data.studentId);
-        if (!student) {
-            throw new Error('Student not found');
-        }
-    }
+    // const teacher = await TeacherModel.findById(data.teacherId);
+    // if (!teacher) {
+    //   throw new Error('Teacher not found');
+    // }
+    // // Validate student exists if provided
+    // if (data.studentId) {
+    //   const student = await StudentModel.findById(data.studentId);
+    //   if (!student) {
+    //     throw new Error('Student not found');
+    //   }
+    // }
     // Check for time conflicts
     const conflict = await Timetable_model_1.TimetableModel.findOne({
         teacherId: data.teacherId,

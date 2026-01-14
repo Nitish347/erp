@@ -48,5 +48,7 @@ router.get('/:id', classController.getClassByIdHandler);
 router.put('/:id', (0, auth_1.requireRole)(['admin']), classController.updateClassHandler);
 // Delete class - Admins only
 router.delete('/:id', (0, auth_1.requireRole)(['admin']), classController.deleteClassHandler);
+// Add section - Admins only
+router.patch('/:id/sections', (0, auth_1.requireRole)(['admin']), classController.addSectionHandler);
 exports.default = router;
 //# sourceMappingURL=class.routes.js.map

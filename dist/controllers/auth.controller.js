@@ -6,7 +6,9 @@ exports.loginStudentHandler = loginStudentHandler;
 exports.loginTeacherHandler = loginTeacherHandler;
 exports.verifyOTPHandler = verifyOTPHandler;
 exports.registerAdminHandler = registerAdminHandler;
+exports.registerSuperAdminHandler = registerSuperAdminHandler;
 exports.loginAdminHandler = loginAdminHandler;
+exports.loginSuperAdminHandler = loginSuperAdminHandler;
 exports.resendOTPHandler = resendOTPHandler;
 const auth_service_1 = require("../services/auth.service");
 async function registerStudentHandler(req, res) {
@@ -119,12 +121,44 @@ async function registerAdminHandler(req, res) {
         });
     }
 }
+async function registerSuperAdminHandler(req, res) {
+    try {
+        const result = await (0, auth_service_1.registerSuperAdmin)(req.body);
+        res.status(201).json({
+            success: true,
+            message: 'Super Admin registered successfully.',
+            data: result
+        });
+    }
+    catch (error) {
+        res.status(400).json({
+            success: false,
+            message: error.message
+        });
+    }
+}
 async function loginAdminHandler(req, res) {
     try {
         const result = await (0, auth_service_1.loginAdmin)(req.body);
         res.json({
             success: true,
             message: 'Admin logged in successfully',
+            data: result
+        });
+    }
+    catch (error) {
+        res.status(401).json({
+            success: false,
+            message: error.message
+        });
+    }
+}
+async function loginSuperAdminHandler(req, res) {
+    try {
+        const result = await (0, auth_service_1.loginSuperAdmin)(req.body);
+        res.json({
+            success: true,
+            message: 'Super Admin logged in successfully',
             data: result
         });
     }

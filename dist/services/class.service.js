@@ -6,6 +6,7 @@ exports.getClassById = getClassById;
 exports.updateClass = updateClass;
 exports.deleteClass = deleteClass;
 exports.getClassesByGrade = getClassesByGrade;
+exports.addSection = addSection;
 const Class_model_1 = require("../models/Class.model");
 async function createClass(data) {
     const classData = new Class_model_1.ClassModel(data);
@@ -35,5 +36,8 @@ async function getClassesByGrade(grade) {
         .populate('teacherId', 'firstName lastName email')
         .sort({ name: 1 })
         .exec();
+}
+async function addSection(id, section) {
+    return await Class_model_1.ClassModel.findByIdAndUpdate(id, { $addToSet: { sections: section } }, { new: true }).exec();
 }
 //# sourceMappingURL=class.service.js.map

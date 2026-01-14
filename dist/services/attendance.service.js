@@ -4,11 +4,16 @@ exports.bulkMarkAttendance = exports.getDailyAttendance = exports.getAttendanceS
 const Attendance_model_1 = require("../models/Attendance.model");
 const Teacher_model_1 = require("../models/Teacher.model");
 const Student_model_1 = require("../models/Student.model");
+const Admin_model_1 = require("../models/Admin.model");
 const markAttendance = async (data) => {
     // Validate teacher exists
-    const teacher = await Teacher_model_1.TeacherModel.findById(data.teacherId);
+    let teacher = await Teacher_model_1.TeacherModel.findById(data.teacherId);
     if (!teacher) {
-        throw new Error('Teacher not found');
+        // Check if it is an Admin (Institution) instead
+        teacher = await Admin_model_1.AdminModel.findById(data.teacherId);
+        if (!teacher) {
+            throw new Error('Teacher or Institution not found');
+        }
     }
     // Validate student exists if provided
     if (data.studentId) {

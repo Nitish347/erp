@@ -5,4 +5,5 @@ export declare function getClassById(id: string): Promise<Class | null>;
 export declare function updateClass(id: string, data: Partial<Class>): Promise<Class | null>;
 export declare function deleteClass(id: string): Promise<Class | null>;
 export declare function getClassesByGrade(grade: string): Promise<Class[]>;
+export declare function addSection(id: string, section: string): Promise<Class | null>;
 //# sourceMappingURL=class.service.d.ts.map

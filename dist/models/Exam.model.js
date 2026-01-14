@@ -36,6 +36,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ExamModel = void 0;
 const mongoose_1 = __importStar(require("mongoose"));
 const ExamSchema = new mongoose_1.Schema({
+    examTypeId: { type: mongoose_1.Schema.Types.ObjectId, ref: 'ExamType', required: true },
     name: { type: String, required: true, trim: true },
     type: { type: String, enum: ['quiz', 'mid-term', 'final', 'assignment'], required: true },
     subject: { type: String, required: true },

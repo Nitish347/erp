@@ -45,7 +45,22 @@ async function createExamHandler(req, res) {
             res.status(403).json({ success: false, message: 'Only teachers and admins can create exams' });
             return;
         }
+        // Automatically set teacherId and instituteId based on user role
         if (req.user.role === 'teacher') {
+            req.body.teacherId = req.user.id;
+            // For teachers, fetch their institute from the teacher model
+            const { TeacherModel } = await Promise.resolve().then(() => __importStar(require('../models/Teacher.model')));
+            const teacher = await TeacherModel.findById(req.user.id);
+            if (!teacher) {
+                res.status(404).json({ success: false, message: 'Teacher not found' });
+                return;
+            }
+            req.body.instituteId = teacher.institute;
+        }
+        else if (req.user.role === 'admin' || req.user.role === 'super_admin') {
+            // For admins, their ID IS the instituteId (merged model)
+            req.body.instituteId = req.user.id;
+            // Also set teacherId to admin's ID for admin-created exams
             req.body.teacherId = req.user.id;
         }
         const exam = await examService.createExam(req.body);

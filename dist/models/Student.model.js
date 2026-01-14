@@ -42,14 +42,24 @@ const StudentSchema = new mongoose_1.Schema({
     password: { type: String, required: true, minlength: 6 },
     phone: { type: String },
     enrollmentNumber: { type: String, required: true, unique: true, trim: true },
+    rollNumber: { type: String, required: true, trim: true },
     class: { type: String },
     section: { type: String },
+    gender: { type: String },
+    address: { type: String },
     dateOfBirth: { type: Date },
+    admissionDate: { type: Date },
     institute: { type: mongoose_1.Schema.Types.ObjectId, ref: 'Admin', required: true },
     teacher: { type: mongoose_1.Schema.Types.ObjectId, ref: 'Teacher' },
     isEmailVerified: { type: Boolean, default: false },
     otp: { type: String },
     otpExpiry: { type: Date },
+    guardian: {
+        name: { type: String, required: true },
+        phone: { type: String, required: true },
+        email: { type: String },
+        relation: { type: String },
+    },
 }, { timestamps: true });
 exports.StudentModel = mongoose_1.default.models.Student || mongoose_1.default.model('Student', StudentSchema);
 //# sourceMappingURL=Student.model.js.map

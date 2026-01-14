@@ -36,14 +36,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.TeacherModel = void 0;
 const mongoose_1 = __importStar(require("mongoose"));
 const TeacherSchema = new mongoose_1.Schema({
-    firstName: { type: String, required: true, trim: true },
-    lastName: { type: String, required: true, trim: true },
-    email: { type: String, required: true, unique: true, lowercase: true, trim: true },
+    firstName: { type: String, required: true },
+    lastName: { type: String, required: true },
+    email: { type: String, required: true, unique: true, lowercase: true },
     password: { type: String, required: true, minlength: 6 },
     phone: { type: String },
+    address: { type: String },
     department: { type: String },
     hireDate: { type: Date },
-    institute: { type: mongoose_1.Schema.Types.ObjectId, ref: 'Admin', required: true },
+    institute: { type: mongoose_1.default.Schema.Types.ObjectId, ref: 'Admin', required: true },
     isEmailVerified: { type: Boolean, default: false },
     otp: { type: String },
     otpExpiry: { type: Date },

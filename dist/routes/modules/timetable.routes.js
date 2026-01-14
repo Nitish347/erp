@@ -10,6 +10,10 @@ router.get('/conflicts', auth_1.authenticateToken, timetable_controller_1.getTim
 router.get('/teacher/:teacherId', auth_1.authenticateToken, timetable_controller_1.getTimetableByTeacherHandler);
 router.get('/student/:studentId', auth_1.authenticateToken, timetable_controller_1.getTimetableByStudentHandler);
 router.get('/:id', auth_1.authenticateToken, timetable_controller_1.getTimetableByIdHandler);
+// General CRUD routes (for admin use)
+router.post('/', auth_1.authenticateToken, (0, auth_1.requireRole)(['admin']), timetable_controller_1.createTimetableHandler);
+router.put('/:id', auth_1.authenticateToken, (0, auth_1.requireRole)(['admin']), timetable_controller_1.updateTimetableHandler);
+router.delete('/:id', auth_1.authenticateToken, (0, auth_1.requireRole)(['admin']), timetable_controller_1.deleteTimetableHandler);
 // Protected routes - Teacher timetables can only be updated by admins
 router.post('/teacher', auth_1.authenticateToken, (0, auth_1.requireRole)(['admin']), timetable_controller_1.createTimetableHandler);
 router.patch('/teacher/:id', auth_1.authenticateToken, (0, auth_1.requireRole)(['admin']), timetable_controller_1.updateTimetableHandler);
