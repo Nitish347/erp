@@ -23,6 +23,7 @@ const class_routes_1 = __importDefault(require("./modules/class.routes"));
 const subject_routes_1 = __importDefault(require("./modules/subject.routes"));
 const fee_routes_1 = __importDefault(require("./modules/fee.routes"));
 const super_admin_routes_1 = __importDefault(require("./modules/super-admin.routes"));
+const lunch_routes_1 = __importDefault(require("./modules/lunch.routes"));
 function registerRoutes(app) {
     const apiRoot = '/api/v1';
     const router = (0, express_1.Router)();
@@ -34,6 +35,7 @@ function registerRoutes(app) {
     router.use('/students', student_routes_1.default);
     router.use('/timetables', timetable_routes_1.default);
     router.use('/attendance', attendance_routes_1.default);
+    router.use('/lunch', lunch_routes_1.default);
     router.use('/homework', homework_routes_1.default);
     router.use('/homework-submissions', homeworkSubmission_routes_1.default);
     router.use('/exams', exam_routes_1.default);
