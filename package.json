@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
     "build": "rimraf dist && tsc",
+    "postinstall": "npm run build",
     "start": "node dist/index.js",
     "lint": "echo 'add linter later'",
     "seed:superadmin": "ts-node src/scripts/create-super-admin.ts"
