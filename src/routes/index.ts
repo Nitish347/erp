@@ -17,6 +17,7 @@ import classRouter from './modules/class.routes';
 import subjectRouter from './modules/subject.routes';
 import feeRouter from './modules/fee.routes';
 import superAdminRouter from './modules/super-admin.routes';
+import lunchRouter from './modules/lunch.routes';
 
 export function registerRoutes(app: Application): void {
   const apiRoot = '/api/v1';
@@ -30,6 +31,7 @@ export function registerRoutes(app: Application): void {
   router.use('/students', studentRouter);
   router.use('/timetables', timetableRouter);
   router.use('/attendance', attendanceRouter);
+  router.use('/lunch', lunchRouter);
   router.use('/homework', homeworkRouter);
   router.use('/homework-submissions', homeworkSubmissionRouter);
   router.use('/exams', examRouter);
